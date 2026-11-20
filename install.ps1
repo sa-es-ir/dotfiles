@@ -24,15 +24,22 @@ foreach ($module in 'z', 'Terminal-Icons') {
     }
 }
 
-# --- Hook profile.ps1 into the PowerShell profile -----------------------------
-$hook = ". `"$PSScriptRoot\profile.ps1`""
-if (-not (Test-Path $PROFILE)) {
-    New-Item -ItemType File -Path $PROFILE -Force | Out-Null
-}
-if (-not (Select-String -Path $PROFILE -SimpleMatch $hook -Quiet)) {
+# --- Copy the profile files into the PowerShell profile folder ---------------
+# The profile is self-contained: nothing loads from this repo at shell start.
+# Re-run this script after editing the files here to apply the changes.
+$profileDir = Split-Path $PROFILE
+New-Item -ItemType Directory -Path $profileDir -Force | Out-Null
+
+$source = Join-Path $PSScriptRoot 'Microsoft.PowerShell_profile.ps1'
+if ((Test-Path $PROFILE) -and
+    (Get-FileHash $PROFILE).Hash -ne (Get-FileHash $source).Hash) {
     Copy-Item $PROFILE "$PROFILE.bak" -Force
-    Add-Content -Path $PROFILE -Value $hook
-    Write-Host "Added dotfiles profile to $PROFILE (backup: $PROFILE.bak)"
+    Write-Host "Backed up existing profile to $PROFILE.bak"
+}
+Copy-Item $source $PROFILE -Force
+
+foreach ($file in 'shell-integration_v11.ps1', '.exports.ps1', '.aliases.ps1') {
+    Copy-Item (Join-Path $PSScriptRoot $file) $profileDir -Force
 }
 
-Write-Host 'Done. Open a new terminal to load the profile.'
+Write-Host "Done. Profile installed to $profileDir. Open a new terminal to load it."

@@ -11,8 +11,11 @@ cd dotfiles
 ./install.ps1
 ```
 
-`install.ps1` installs oh-my-posh (via winget), the Meslo font and the modules, then adds a line to
-your `$PROFILE` that loads `profile.ps1` from this folder. It is safe to re-run.
+`install.ps1` installs oh-my-posh (via winget), the Meslo font and the modules, then copies
+`Microsoft.PowerShell_profile.ps1`, `shell-integration_v11.ps1`, `.aliases.ps1` and `.exports.ps1` into
+your PowerShell profile folder (`Split-Path $PROFILE`), backing up any existing profile to
+`$PROFILE.bak`. The installed profile doesn't depend on this repo; re-run `install.ps1` after editing
+the files here. It is safe to re-run.
 
 Then set your terminal font to **MesloLGM Nerd Font** (Windows Terminal: `Ctrl+Shift+,`, add
 `"font": { "face": "MesloLGM Nerd Font" }` under `profiles.defaults`) and open a new terminal.
