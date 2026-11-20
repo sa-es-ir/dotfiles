@@ -17,4 +17,7 @@ your `$PROFILE` that loads `profile.ps1` from this folder. It is safe to re-run.
 Then set your terminal font to **MesloLGM Nerd Font** (Windows Terminal: `Ctrl+Shift+,`, add
 `"font": { "face": "MesloLGM Nerd Font" }` under `profiles.defaults`) and open a new terminal.
 
+This is for **PowerShell 7** (`pwsh`). Windows Terminal defaults to Windows PowerShell 5.1, which uses a
+different profile, so set *Settings → Startup → Default profile* to **PowerShell**.
+
 Put your own aliases in `.aliases.ps1` and environment variables in `.exports.ps1`.
